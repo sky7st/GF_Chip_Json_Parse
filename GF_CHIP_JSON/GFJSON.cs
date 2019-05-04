@@ -202,7 +202,7 @@ namespace GF_CHIP_JSON
         
         public int getPos(List<GFChip> chips)
         {
-            return (int)(chips.Count - 13 * chips.Count / 13 + 1);
+            return (int)(chips.Count - 13 * (int)(chips.Count / 13));
         }
         
         public string getAllChips(List<GFChip> chips, bool showInEquip=true)
