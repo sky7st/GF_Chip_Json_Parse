@@ -204,11 +204,15 @@ namespace GF_CHIP_JSON
         {
             return (int)(chips.Count - 13 * (int)(chips.Count / 13));
         }
-        
+        public int getPos(int count)
+        {
+            return (int)(count - 13 * (int)(count / 13));
+        }
+
         public string getAllChips(List<GFChip> chips, bool showInEquip=true)
         {
             validCnt = 0;
-            string s = "[" + r1[getPos(chips)] + "!";
+            string s = "";
             int i = 1;
             foreach (var chip in chips)
             {
@@ -247,7 +251,7 @@ namespace GF_CHIP_JSON
                 s += f;
                 validCnt++;
             }
-            s += "?" + r2[getPos(chips)] + "]";
+            s = "[" + r1[getPos(validCnt)] + "!" + s + "?" + r2[getPos(validCnt)] + "]";
             return s;
         }
 
