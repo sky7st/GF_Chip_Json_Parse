@@ -93,7 +93,7 @@
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(226, 22);
             this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "不顯示裝備中(預設顯示)";
+            this.checkBox2.Text = "顯示裝備中(預設不顯示)";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 

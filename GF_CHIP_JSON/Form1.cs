@@ -15,7 +15,7 @@ namespace GF_CHIP_JSON
         private GFJSON gfjson;
         private List<GFChip> gfChip;
         private bool sortUp = false;
-        private bool showInEquip = true;
+        private bool showInEquip = false;
         public Form1()
         {
             InitializeComponent();
@@ -68,7 +68,7 @@ namespace GF_CHIP_JSON
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            showInEquip = !checkBox2.Checked;
+            showInEquip = checkBox2.Checked;
         }
         private void showText_KeyDown(object sender, KeyEventArgs e)
         {

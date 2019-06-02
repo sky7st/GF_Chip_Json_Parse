@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-namespace GF_CHIP_JSON
+namespace GF_Chip_Json_Parse_excel
 {
     public class GFChip
     {
@@ -45,14 +45,9 @@ namespace GF_CHIP_JSON
     {
         private string jsPath = "";
         private List<GFChip> chips;
-        private Dictionary<string, string> dictShape;
-        private Dictionary<string, string> dictShapeOut;
+        private Dictionary<string, string> dictExcelShape;
 
-        private const string r1 = "infinityfrost";
-        private const string r2 = "fatalchapters";
-        private int validCnt = 0;
         public GFJSON(){
-            validCnt = 0;
             setDict();
         }
 
@@ -165,100 +160,90 @@ namespace GF_CHIP_JSON
 
         private void setDict()
         {
-            dictShape = new Dictionary<string, string>()
-            {
-                {"30", "61"}, {"31", "62"}, {"32", "63"},
-                { "33", "641"}, {"34", "642"}, {"35", "65"},
-                { "36", "66"}, {"37", "67"}, {"38", "68"},
-                { "39", "69"}, {"21", "511"}, {"22", "512"},
-                { "23", "513"}, {"24", "514"}, {"25", "515"},
-                { "26", "516"}, {"27", "517"}, {"28", "518"},
-                { "29", "519"}, {"20", "521"}, {"19", "522"},
-                { "18", "523"}, {"17", "524"}, {"16", "525"},
-                { "15", "526"}, {"14", "527"}, {"13", "528"}, {"12", "529"}
+            dictExcelShape = new Dictionary<string, string>() {
+                { "30", "1"}, { "31", "2"}, { "32", "3"}, { "33", "4a"},
+                { "34", "4b"}, { "35", "5"}, { "36", "6"}, { "37", "7"},
+                { "38", "8"}, { "39", "9"}, { "21", "w"}, { "22", "nb"},
+                { "23", "na"}, { "24", "yb"}, { "25", "ya"}, { "26", "x"},
+                { "27", "t"},  { "28", "fa"}, { "29", "fb"},  { "12", "pb"},
+                { "13", "pa"}, { "14", "i"}, { "15", "u"}, { "16", "za"},
+                { "17", "zb"}, { "18", "v"}, { "19", "la"}, { "20", "lb"}
             };
-
-            dictShapeOut = new Dictionary<string, string>()
-            {
-                {"61", "1"}, {"62", "2"}, {"63", "3"},
-                { "641", "41"}, {"642", "42"}, {"65", "5"},
-                { "66", "6"}, {"67", "7"}, {"68", "8"},
-                { "69", "9"}, {"511", "5"}, {"512", "22"},
-                { "513", "21"}, {"514", "32"}, {"515", "31"},
-                { "516", "6"}, {"517", "4"}, {"518", "11"},
-                { "519", "12"}, {"521", "132"}, {"522", "131"},
-                { "523", "120"}, {"524", "112"}, {"525", "111"},
-                { "526", "10"}, {"527", "9"}, {"528", "82"}, {"529", "81"}
-            };
-        }
-
-        public string getShape(GFChip chip)
-        {
-            string grid_id = chip.grid_id;
-            if (dictShape.ContainsKey(grid_id))
-                return dictShape[grid_id];
-            else
-                return "0";
         }
         
-        public int getPos(List<GFChip> chips)
+        public List<string[]> getExcelChip(List<GFChip> chips, bool showInEquip = false, bool colorBlue = true, bool isShow34 = false)
         {
-            return (int)(chips.Count - 13 * (int)(chips.Count / 13));
-        }
-        public int getPos(int count)
-        {
-            return (int)(count - 13 * (int)(count / 13));
-        }
-
-        public string getAllChips(List<GFChip> chips, bool showInEquip=false)
-        {
-            validCnt = 0;
-            string s = "";
-            int i = 1;
-            foreach (var chip in chips)
+            //GFChip gfChip = chips[0];
+            List<string[]> chip_out = new List<string[]>();
+            foreach(var chip in chips)
             {
-                if (!showInEquip)
-                    if (chip.squad_with_user_id != "0")
-                        continue;
-                GFOut ic = new GFOut();
-                ic.color = getColor(chip);
-                if (getRank(chip) == "5")
-                {
-                    string grid_num = getGridNumber(chip);
-                    if (grid_num == "6")
-                        ic.ic_class = "56";
-                    else if (grid_num == "5")
-                        ic.ic_class = "551";
-                    else
-                        continue;
-                }
-                else
+                if (!showInEquip && chip.squad_with_user_id != "0")
                     continue;
-                string shape = getShape(chip);
-                if (dictShapeOut.ContainsKey(shape))
-                    ic.type = dictShapeOut[shape];
-                else
+                if (getRank(chip) != "5")
                     continue;
-                ic.level = chip.chip_level;
+
+                string color = getColor(chip);
+                if ( (colorBlue && color != "1") || (!colorBlue) && color != "2")
+                    continue;
+                string gridNum = getGridNumber(chip);
+                if (!isShow34 && (gridNum != "6" && gridNum != "5"))
+                    continue;
+
+                string kind = getKind(chip);
+                string chip_level = chip.chip_level;
+                string gridId = chip.grid_id;
+
                 string[] prop = getProperty(chip);
-                ic.hit = prop[2];
-                ic.reload = prop[3];
-                ic.damage = prop[0];
-                ic.destroy = prop[1];
-                string f = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},1&",
-                                        i, ic.color, ic.ic_class, ic.type,
-                                        ic.level, ic.hit, ic.reload,ic.damage,
-                                        ic.destroy);
-                s += f;
-                validCnt++;
+                string[] output = getPropertyVal(gridId, gridNum, kind, chip_level, prop);
+                chip_out.Add(output);
             }
-            s = "[" + r1[getPos(validCnt)] + "!" + s + "?" + r2[getPos(validCnt)] + "]";
-            return s;
+            return chip_out;
         }
 
-        public int getValidCnt()
+        public string[] getPropertyVal(string grid_id, string gridNum, string kind, string chip_level, string[] prop)
         {
-            return validCnt;
+            string[] output = {"" ,"", "", "", "", "" };
+            int chip_level_i = Int32.Parse(chip_level);
+            output[0] = dictExcelShape[grid_id];
+            output[1] = chip_level;
+            double[] baseVal = { 4.4, 12.7, 7.1, 5.7 };
+            double gridCorrection = 0.0;
+            double strengCorrection = 0.0;
+            switch (gridNum)
+            {
+                case "6":
+                    gridCorrection = 1;
+                    break;
+                case "5":
+                    if(kind == "1" )
+                        gridCorrection = 1;
+                    else
+                        gridCorrection = 0.92;
+                    break;
+                case "4":
+                    gridCorrection = 0.8;
+                    break;
+                case "3":
+                    gridCorrection = 0.76;
+                    break;
+                default:
+                    gridCorrection = 0;
+                    break;
+            }
+
+            if (chip_level_i <= 10)
+                strengCorrection = 1.0 + 0.08 * chip_level_i;
+            else
+                strengCorrection = 1.8 + 0.07 * (chip_level_i-10);
+
+            for (int i = 0; i <= 3; i++)
+            {
+                int propgridNum =  Int32.Parse(prop[i]);
+                double ouput_i = Math.Ceiling(propgridNum * baseVal[i] * gridCorrection);
+                ouput_i = Math.Ceiling(ouput_i * strengCorrection);
+                output[i+2] = Convert.ToString((int)ouput_i);
+            }
+            return output;
         }
     }
 }

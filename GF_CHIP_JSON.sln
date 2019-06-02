@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF_CHIP_JSON", "GF_CHIP_JSON\GF_CHIP_JSON.csproj", "{74653E7E-A4CA-4B3A-A871-3DB2437114A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GF_Chip_Json_Parse_excel", "GF_Chip_Json_Parse_excel\GF_Chip_Json_Parse_excel.csproj", "{B532460F-4E85-48CC-BB03-1222884CF89F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{74653E7E-A4CA-4B3A-A871-3DB2437114A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74653E7E-A4CA-4B3A-A871-3DB2437114A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74653E7E-A4CA-4B3A-A871-3DB2437114A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B532460F-4E85-48CC-BB03-1222884CF89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B532460F-4E85-48CC-BB03-1222884CF89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B532460F-4E85-48CC-BB03-1222884CF89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B532460F-4E85-48CC-BB03-1222884CF89F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
