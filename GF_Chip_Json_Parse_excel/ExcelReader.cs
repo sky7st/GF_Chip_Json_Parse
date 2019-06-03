@@ -64,19 +64,23 @@ namespace GF_Chip_Json_Parse_excel
         }   
         public void writeRow(string[] val, int rowCnt = 1)
         {
-            xlWorksheet.Cells[rowCnt + 3, 1].value = rowCnt;
-            for (int i = 0; i <= 5; i++)
+            try
             {
-                xlWorksheet.Cells[rowCnt + 3, i+2].value = val[i];
+                xlWorksheet.Cells[rowCnt + 3, 1].value = rowCnt;
+                for (int i = 0; i <= 5; i++)
+                {
+                    xlWorksheet.Cells[rowCnt + 3, i + 2].value = val[i];
+                }
             }
-            //Console.WriteLine(rowCnt);      
+            catch
+            {
+            }   
         }
         public void clearRangeRow(int startIndex=1, int endIndex = 300)
         {
             Excel.Range rng = xlWorksheet.Range[xlWorksheet.Cells[startIndex+3, 1], xlWorksheet.Cells[endIndex+3, 7]];
             rng.Clear();
             Marshal.ReleaseComObject(rng);
-
         }
         public void exitAll(bool save= true)
         {

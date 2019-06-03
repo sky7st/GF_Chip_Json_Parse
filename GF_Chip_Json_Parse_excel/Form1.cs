@@ -35,7 +35,6 @@ namespace GF_Chip_Json_Parse_excel
         }
         public void init()
         {
-            show34Check.Enabled = false;
             chooseFileButExcel.Enabled = false;
             isSetJson = false;
             isShow34 = false;
@@ -58,17 +57,10 @@ namespace GF_Chip_Json_Parse_excel
                     gfChip = gfjson.parseChip();
                     if (!sortUp)
                         gfChip.Reverse();
-                    output = gfjson.getExcelChip(gfChip, showInEquip, colorBlue);
+                    output = gfjson.getExcelChip(gfChip, showInEquip, colorBlue, isShow34);
                     int cnt = output.Count;
                     isSetJson = true;
 
-                    //excel.openExcelFile();
-                    //for (int i = 0; i < cnt; i++)
-                    //{
-                    //    excel.writeRow(output[i], i + 1);
-                    //}
-
-                    //excel.exitAll();
                     MessageBox.Show(String.Format("辨識完成!!!\n共輸出{0}個晶片\n請選擇Excel檔案!!", cnt));
                     chooseFileButExcel.Enabled = true;
                     statusLabel.Visible = true;
@@ -170,7 +162,7 @@ namespace GF_Chip_Json_Parse_excel
             }
             else
             {
-                //Console.WriteLine("Excel Error");
+                statusLabel.Text = "Excel 檔案錯誤!!";
             }
             excelBgWorker.ReportProgress(100);
         }
@@ -228,6 +220,11 @@ namespace GF_Chip_Json_Parse_excel
         private void stopExcelWrite_Click(object sender, EventArgs e)
         {
             excelBgWorker.CancelAsync();
+        }
+
+        private void show34Check_CheckedChanged(object sender, EventArgs e)
+        {
+            isShow34 = show34Check.Checked;
         }
     }
 }

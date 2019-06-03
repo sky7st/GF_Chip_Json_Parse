@@ -157,23 +157,23 @@
             // show34Check
             // 
             this.show34Check.AutoSize = true;
-            this.show34Check.Enabled = false;
             this.show34Check.Location = new System.Drawing.Point(371, 28);
             this.show34Check.Name = "show34Check";
             this.show34Check.Size = new System.Drawing.Size(135, 22);
             this.show34Check.TabIndex = 16;
             this.show34Check.Text = "加入5星3 4格";
             this.show34Check.UseVisualStyleBackColor = true;
+            this.show34Check.CheckedChanged += new System.EventHandler(this.show34Check_CheckedChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("新細明體", 9F);
-            this.label4.Location = new System.Drawing.Point(367, 53);
+            this.label4.Location = new System.Drawing.Point(391, 53);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(128, 18);
+            this.label4.Size = new System.Drawing.Size(110, 18);
             this.label4.TabIndex = 17;
-            this.label4.Text = "(目前無法使用)";
+            this.label4.Text = "(預設不加入)";
             // 
             // excelBgWorker
             // 

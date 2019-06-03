@@ -161,19 +161,20 @@ namespace GF_Chip_Json_Parse_excel
         private void setDict()
         {
             dictExcelShape = new Dictionary<string, string>() {
-                { "30", "1"}, { "31", "2"}, { "32", "3"}, { "33", "4a"},
-                { "34", "4b"}, { "35", "5"}, { "36", "6"}, { "37", "7"},
-                { "38", "8"}, { "39", "9"}, { "21", "w"}, { "22", "nb"},
+                { "3", "tr1"}, { "4", "tr2"}, { "5", "t1"}, { "6", "t2"},
+                { "7", "t3a"}, { "8", "t3b"}, { "9", "t4a"}, { "10", "t4b"},
+                { "11", "t5"}, { "12", "pb"}, { "13", "pa"}, { "14", "i"},
+                { "15", "u"}, { "16", "za"}, { "17", "zb"}, { "18", "v"},
+                { "19", "la"}, { "20", "lb"}, { "21", "w"}, { "22", "nb"},
                 { "23", "na"}, { "24", "yb"}, { "25", "ya"}, { "26", "x"},
-                { "27", "t"},  { "28", "fa"}, { "29", "fb"},  { "12", "pb"},
-                { "13", "pa"}, { "14", "i"}, { "15", "u"}, { "16", "za"},
-                { "17", "zb"}, { "18", "v"}, { "19", "la"}, { "20", "lb"}
+                { "27", "t"},  { "28", "fa"}, { "29", "fb"}, { "30", "1"},
+                { "31", "2"}, { "32", "3"}, { "33", "4a"}, { "34", "4b"},
+                { "35", "5"}, { "36", "6"}, { "37", "7"}, { "38", "8"}, { "39", "9"}
             };
         }
         
         public List<string[]> getExcelChip(List<GFChip> chips, bool showInEquip = false, bool colorBlue = true, bool isShow34 = false)
         {
-            //GFChip gfChip = chips[0];
             List<string[]> chip_out = new List<string[]>();
             foreach(var chip in chips)
             {
@@ -186,8 +187,9 @@ namespace GF_Chip_Json_Parse_excel
                 if ( (colorBlue && color != "1") || (!colorBlue) && color != "2")
                     continue;
                 string gridNum = getGridNumber(chip);
-                if (!isShow34 && (gridNum != "6" && gridNum != "5"))
-                    continue;
+                if(gridNum != "6" && gridNum != "5")
+                    if (!isShow34 || (isShow34 && (gridNum != "4" && gridNum != "3") ) )
+                        continue;
 
                 string kind = getKind(chip);
                 string chip_level = chip.chip_level;
