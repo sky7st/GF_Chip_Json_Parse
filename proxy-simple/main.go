@@ -54,7 +54,7 @@ func (rs *rsyars) Run() error {
 	srv := goproxy.NewProxyHttpServer()
 	srv.Logger = new(NilLogger)
 	srv.OnRequest().HandleConnect(goproxy.AlwaysMitm)
-	srv.OnRequest(goproxy.DstHostIs(localhost+":8888")).DoFunc(
+	srv.OnRequest(goproxy.DstHostIs(localhost+":8080")).DoFunc(
 		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			if strings.HasSuffix(r.URL.Path, "ca.crt"){
 				b, err := ioutil.ReadFile("ca.crt")
@@ -65,7 +65,7 @@ func (rs *rsyars) Run() error {
 				return r, goproxy.NewResponse(r,
 					"application/x-x509-ca-cert", http.StatusOK, str)
 			}else{
-				variant := fmt.Sprintf("%s:%d/ca.crt", localhost, 8888)
+				variant := fmt.Sprintf("%s:%d/ca.crt", localhost, 8080)
 				str := "<!DOCTYPE html>" +
 					"<html><body><h1>" +
 					"Click the URL" +
